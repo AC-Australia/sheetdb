@@ -1,0 +1,1 @@
+export const APP_NAME: String = "AC Australia - Sheet Database Manager"

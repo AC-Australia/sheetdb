@@ -1,22 +1,56 @@
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
 const app = express();
-
-// Serve the static files from the React app
+let sheetdb
 app.use(cors());
-// app.use(express.static(path.join(__dirname, 'client/public')));
+app.use(express.json())
 
-// An api endpoint that returns a short list of items
-app.get('/api/getList', (req,res) => {
-    var list = ["item1", "item2", "item3"];
-    res.json(list);
-    console.log('Sent list of items');
+
+//This Process Returns All Material Types From the Sheet Database
+app.put('/api/setup-db', async(req,res) =>{
+    try{
+        console.log("THIS LOCATION", req.body.path)
+        let connection = sheetdb.getNewDbConnection(req.body.path)   
+        res.json(connection) 
+    }catch(err){
+        console.log(err)
+        res.json(err)
+    }
 });
 
-const port = process.env.PORT || 3001;
-const startExpress = () => app.listen(port);
+app.get('/api/material-list', async (req,res) => {
+    let list = await sheetdb.getMaterialsFromDB();
+    res.json(list);
+});
 
-console.log('App is listening on port ' + port);
+app.get('/api/thickness-list', async (req,res) => {
+    let list = await sheetdb.getThicknessFromDB();
+    res.json(list);
+});
+
+app.get('/api/sheets-list', async (req,res) => {
+    let list = await sheetdb.getSheetsFromDB();
+    res.json(list);
+});
+
+app.get('/', (req,res) => {
+    res.json("blake")
+})
+
+app.put('/api/update-size', async (req,res) => {
+    let newSheet = await sheetdb.putUpdatesize(req.body)
+    res.json(newSheet);
+})
+
+
+
+const startExpress = () => {
+    const port = process.env.expressPort;
+    app.listen(port);
+    console.log('App is listening on port ' + port);
+    sheetdb = require('./sheetdb');
+}
+
+
 
 module.exports.startExpress = startExpress;
