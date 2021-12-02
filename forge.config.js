@@ -13,7 +13,7 @@ module.exports = {
     {
       "name": "@electron-forge/maker-squirrel",
       "config": {
-        "name": "Sheet Database Manager",
+        "name": "Sheet-Database-Manager",
         "authors": "AC Australia - BW",
         "icon": "src/pages/assistant.ico",
         "description": "Handle Updates and Checks of the Sheet DB"

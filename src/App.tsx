@@ -7,18 +7,14 @@ import { Route, Switch } from 'react-router-dom';
 // import "firebase/auth";
 import { Messages } from 'primereact/messages';
 import { Button } from 'primereact/button';
-
 //Internal Imports
 import { RootStoreProvider } from './components/RootStoreProvider';
 import { RootStore, setupRootStore } from './models/root-store';
 import { getVersionDetail } from './services/Services'
 import LoadingPage from './components/generic/LoadingPage';
-import MaterialList from './components/Material List/MaterialList';
-import ThicknessList from './components/Thickness List/ThicknessList';
-import SheetSizeList from './components/Sheet Size List/SheetSizeList';
-import Modifications from './components/Modifications/Modifications';
-import Settings from './components/generic/Settings';
 import SettingsButton from './components/generic/Settings Button';
+import ConnectedRouter from './components/routers/ConnectedRouter';
+import headerImage from './acauslogo.png'
 
 
 const { ipcRenderer } = window.require("electron");
@@ -72,7 +68,7 @@ function App() {
   );
 
   return (
-    <div className='text-center h-full'>
+    <div className='text-center h-full' >
       <RootStoreProvider value={rootStore}>
         <HashRouter>
           <div className = 'fixed top-0 right-0 m-1'>
@@ -87,20 +83,9 @@ function App() {
           <div className = 'fixed right-0 my-10'>
             <Messages ref={showVersionDetail} onClick={showVersionData} />
           </div>
-          <h1>AC Australia Sheet Database</h1>
-          <h1>AC Australia Sheet Database</h1>
-          <h1>AC Australia Sheet Database</h1>
-          <h1>AC Australia Sheet Database</h1>
-          <h1>AC Australia Sheet Database</h1>
-          <h1>AC Australia Sheet Database</h1>
-          <h1>AC Australia Sheet Database</h1>
-          <Switch>
-            <Route path='/settings' component={Settings} />
-            <Route path='/modifications' component={Modifications} />
-            <Route path='/sheets' component={SheetSizeList} />
-            <Route path='/thickness' component={ThicknessList} />  
-            <Route component={MaterialList} />
-          </Switch> 
+            <img src={headerImage} alt="AC Australia Logo" style={{ margin:"auto", padding:"10px" }} />
+            <p style={{padding:'20px'}}><strong>Need Help? Email:</strong> <a href="mailto:HelpDesk@au.alphacam.com">HelpDesk@au.alphacam.com</a> </p>
+          <ConnectedRouter />
         </HashRouter> 
       </RootStoreProvider>
     </div>

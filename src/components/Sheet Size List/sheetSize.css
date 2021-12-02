@@ -1,0 +1,9 @@
+.row-accessories-pending {
+	background-color: rgba(35, 154, 171, 0.15) !important;
+}
+.row-accessories-available {
+	background-color: rgba(34, 197, 94, 0.35) !important;
+}
+.row-accessories-reserved {
+	background-color: rgba(239, 68, 68, 0.35) !important;
+}

@@ -8,7 +8,7 @@ import { Button } from 'primereact/button';
 import { useHistory } from "react-router-dom";
 import { Tag } from 'primereact/tag';
 import StepView from '../generic/StepView';
-
+import './sheetSize.css'
 const SheetList = observer(() => {
 
   const rootStore: RootStore = useStores();
@@ -19,6 +19,11 @@ const SheetList = observer(() => {
     history.push("/modifications")
   }
 
+  const rowClass = (data: { status: string; }) => {
+  const statusName = data.status.toLowerCase()
+   return `row-accessories-${statusName}`
+}
+
   const renderHeader = () => {
     return (
         <div className="p-d-flex p-jc-between p-ai-center">
@@ -28,13 +33,14 @@ const SheetList = observer(() => {
   }
 
   const SelectMaterialButton = (rowData:any) => {
-    return <Button type="button" label="click" icon="pi pi-angle-double-right" onClick={()=>{handleClick(rowData)}}></Button>;
+    return <Button type="button" icon="pi pi-angle-double-right" onClick={()=>{handleClick(rowData)}} style={{backgroundColor:'#239AAB'}} ></Button>;
+            
   } 
 
   const statusBodyTemplate = (rowData:any) => {
     switch (rowData.status){
       case "Pending":
-        return <Tag value={rowData.status}></Tag>;
+        return <Tag value={rowData.status} style={{backgroundColor:'#239AAB'}}></Tag>;
       case "Available":
         return <Tag severity="success" value={rowData.status}></Tag>;
       case "Reserved":
@@ -51,10 +57,13 @@ const SheetList = observer(() => {
           <DataTable value={rootStore.sheetsFromThicknessID} paginator className="p-datatable-customers" header={renderHeader} rows={10} paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                     dataKey="id" rowHover
                     filterDisplay="menu" responsiveLayout="scroll"
+                    resizableColumns
+                    size="small"
+                    rowClassName={rowClass}
                     emptyMessage="No Sheets For This Material And Thickness."
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <Column field="id" header="ID" sortable filter filterPlaceholder="Search by ID" style={{ minWidth: '1rem' }} />
-            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by Name" style={{ minWidth: '24rem' }} /> 
+            <Column field="visName" header="Name" sortable filter filterPlaceholder="Search by Name" style={{ minWidth: '24rem' }} /> 
             <Column field="dy" header="Length" sortable filter filterPlaceholder="Search by Length" style={{ minWidth: '2rem' }} />
             <Column field="dx" header="Width" sortable filter filterPlaceholder="Search by Width" style={{ minWidth: '2rem' }} />
             <Column field="position" header="Postition" sortable filter filterPlaceholder="Search by Postition" style={{ minWidth: '2rem' }} />

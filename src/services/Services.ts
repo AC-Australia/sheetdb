@@ -33,21 +33,19 @@ export const getVersionDetail = () => {
 
 export const getMaterialList = async () => {
   //Get a list of all Material Names in Sheet DB
-  console.log(expressPort)
   const materials = await axios.get(`http://localhost:${expressPort}/api/material-list`)
   return materials.data
 }
 export const getThicknessList = async () => {
   //Get a list of all Thicknesses Availible in Sheet DB
-  console.log(expressPort)
   const thicknesses = await axios.get(`http://localhost:${expressPort}/api/thickness-list`)
   return thicknesses.data
 }
 
 export const getSheetList = async () => {
   //Get a list of all Thicknesses Availible in Sheet DB
-  console.log(expressPort)
   const sheets = await axios.get(`http://localhost:${expressPort}/api/sheets-list`)
+  console.log(sheets.data)
   return sheets.data
 }
 
@@ -63,13 +61,23 @@ export const updateSheet = async (id:number, name:string, width:number, length:n
   return newSheet
 }
 
-export const generateDBConnection = async (path:string) =>{
-  try{
-    const newConnection = await axios.put(`http://localhost:${expressPort}/api/setup-db`,{
-      path: path
+export const deleteSheet = async (id:number, name:string) => {
+  const deletedSheet = await axios.put(`http://localhost:${expressPort}/api/delete-size`, {
+    id:id,
+    name:name
+  })
+  return deletedSheet
+}
+
+export const generateDBConnection = async (locPath:string) =>{
+ const newConnection = await axios.put(`http://localhost:${expressPort}/api/setup-db`,{
+  locPath: locPath
     })
-  } catch(err){
-    console.log(err)
-    return err
+  if (newConnection.status === 200){
+    console.log(newConnection)
+    return newConnection
+  } else {
+    console.log(newConnection)
+    throw new Error("err")
   }
 }

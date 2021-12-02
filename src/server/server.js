@@ -5,16 +5,16 @@ let sheetdb
 app.use(cors());
 app.use(express.json())
 
-
 //This Process Returns All Material Types From the Sheet Database
 app.put('/api/setup-db', async(req,res) =>{
     try{
-        console.log("THIS LOCATION", req.body.path)
-        let connection = sheetdb.getNewDbConnection(req.body.path)   
+        console.log("THIS LOCATION", req.body.locPath)
+        let connection = sheetdb.getNewDbConnection(req.body.locPath)  
         res.json(connection) 
     }catch(err){
+        console.log("ERROR READING DB")
         console.log(err)
-        res.json(err)
+        res.status(404).send("Database Could not be found")
     }
 });
 
@@ -40,6 +40,11 @@ app.get('/', (req,res) => {
 app.put('/api/update-size', async (req,res) => {
     let newSheet = await sheetdb.putUpdatesize(req.body)
     res.json(newSheet);
+})
+
+app.put('/api/delete-size', async (req,res) => {
+    let deletedSheet = await sheetdb.putDeletesize(req.body)
+    res.json(deletedSheet);
 })
 
 

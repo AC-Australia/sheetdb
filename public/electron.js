@@ -32,8 +32,8 @@ let installExtension, REACT_DEVELOPER_TOOLS;
     // Creats Window and Loads Render Files
     console.log("Creating New Winow")
     const win = new BrowserWindow({
-      width: 800,
-      height: 700,
+      width: 1430,
+      height: 1080,
       webPreferences: {
         nodeIntegration: true
       }
@@ -111,7 +111,7 @@ app.on('window-all-closed', () => {
 })
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
+    app.createWindow()
   }
 })
 

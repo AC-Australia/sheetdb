@@ -15,20 +15,36 @@ const StepView = observer(() => {
     //Will Need to add some logic for steps later ie cant skip steps
     switch(step){
       case 0:
-        rootStore.updateStepNumber(step)
-        history.push("/")
+          rootStore.updateStepNumber(step)
+          history.push("/")
         break;
       case 1:
-        rootStore.updateStepNumber(step)
-        history.push("/thickness")
+        if(rootStore.currentMaterial){
+          rootStore.updateStepNumber(step)
+          history.push("/thickness")
+        } else {
+          rootStore.updateStepNumber(0)
+          history.push("/")
+          
+        }
         break;
       case 2:
-        rootStore.updateStepNumber(step)
-        history.push("/sheets")
+        if(rootStore.currentThickness){
+          rootStore.updateStepNumber(step)
+          history.push("/sheets")
+        } else {
+          rootStore.updateStepNumber(1)
+          history.push("/thickness")
+        }
         break;
       case 3:
-        rootStore.updateStepNumber(step)
-        history.push("/modifications")
+        if(rootStore.currentSheet){
+          rootStore.updateStepNumber(step)
+          history.push("/modifications")
+        } else {
+          rootStore.updateStepNumber(2)
+          history.push("/sheets")
+        }  
         break;
       default:
         rootStore.updateStepNumber(0)

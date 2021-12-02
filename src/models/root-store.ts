@@ -4,12 +4,12 @@ import {
   getThicknessList,
   getSheetList,
   updateSheet,
+  deleteSheet,
   generateDBConnection
   } from '../services/Services';
 import MaterialModel from './MaterialModel';
 import ThicknessModel from './ThicknessModel';
 import SheetModel from './SheetModel'
-import { storage } from 'firebase-admin';
 
 export const RootStoreModel = types
   .model('RootStore', {
@@ -22,7 +22,8 @@ export const RootStoreModel = types
     materials: types.array(MaterialModel),
     thicknesses: types.array(ThicknessModel),
     sheets: types.array(SheetModel),
-    databasePath: types.maybe(types.string)
+    databasePath: types.maybe(types.string),
+    databaseConnection: types.boolean
   })
   .views((self) => {
     return {
@@ -57,7 +58,6 @@ export const RootStoreModel = types
       hydrateMaterialList: flow(function* hydrateMaterialList() {
         try{
           self.materials = yield getMaterialList()
-          console.log(self.materials)
         } catch(err){
           console.log(err)
         }
@@ -65,13 +65,13 @@ export const RootStoreModel = types
       hydrateThicknessList: flow(function* hydrateThicknessList() {
         try{
           self.thicknesses = yield getThicknessList()
-          console.log(self.thicknesses)
         } catch(err){
           console.log(err)
         }
       }),
       hydrateSheetList: flow(function* hydrateThicknessList() {
         try{
+          console.log("Sheets")
           self.sheets = yield getSheetList()
           console.log(self.sheets)
         } catch(err){
@@ -80,18 +80,24 @@ export const RootStoreModel = types
       }),
       updateSheetSize: flow(function* updateSheetSize(id:number, dy:number, dx:number, status:string) {
         const sheet = self.sheets.filter(sheet => sheet.id === id)[0]
-        //sheet.updateSheetInfo(dy, dx, status)
         const newSheet = yield updateSheet(id,sheet.name, dy, dx, status)
+        return 
+      }),
+      deleteSheetSize: flow(function* deleteSheetSize(id:number, name:string){
+        const sheet = yield deleteSheet(id, name)
         return 
       }),
       conectToDB: flow(function* conectToDB() {
         try{
-          console.log(self.databasePath)
           const dbConnect = yield generateDBConnection(self.databasePath);
+          self.databaseConnection = true
           return dbConnect
         } catch(err){
-          console.log(err)
-        }
+          console.log("ERROR", err)
+          self.databaseConnection = false
+          console.log(self.databaseConnection)
+          return 
+        } 
       }),
       getDBPathFromStorage() {
        if (localStorage.getItem('dbPathForSheetDB')) {
@@ -110,11 +116,13 @@ export const RootStoreModel = types
 
 export type RootStore = Instance<typeof RootStoreModel>;
 export const setupRootStore = async () => {
-  const rs: RootStore = RootStoreModel.create({currentStep: 0 });
+  const rs: RootStore = RootStoreModel.create({currentStep: 0, databaseConnection: false });
   rs.getDBPathFromStorage()
   await rs.conectToDB()
-  await rs.hydrateMaterialList()
-  await rs.hydrateThicknessList()
-  await rs.hydrateSheetList()
+  if (rs.databaseConnection){
+    await rs.hydrateMaterialList()
+    await rs.hydrateThicknessList()
+    await rs.hydrateSheetList()
+  }
   return rs;
 };

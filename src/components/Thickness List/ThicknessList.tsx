@@ -27,7 +27,7 @@ const ThicknessList = observer(() => {
   }
 
   const SelectMaterialButton = (rowData:any) => {
-    return <Button type="button" label="click" icon="pi pi-angle-double-right" onClick={()=>{handleClick(rowData)}}></Button>;
+    return <Button type="button" icon="pi pi-angle-double-right" onClick={()=>{handleClick(rowData)}} style={{backgroundColor:'#239AAB'}} ></Button>;
   } 
 
     return (
@@ -36,6 +36,8 @@ const ThicknessList = observer(() => {
                     dataKey="id" rowHover
                     filterDisplay="menu" responsiveLayout="scroll"
                     emptyMessage="No Thicknesses For This Material Found."
+                    resizableColumns
+                    size="small"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <Column field="id" header="ID" sortable filter filterPlaceholder="Search by ID" style={{ minWidth: '2rem' }} />
             <Column field="thickness" header="Thickness" sortable filter filterPlaceholder="Search by Name" style={{ minWidth: '24rem' }} /> 

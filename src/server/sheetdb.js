@@ -3,14 +3,35 @@
 const Database = require('better-sqlite3');
 let db
 
-const getNewDbConnection = async (path) =>{
+const getNewDbConnection = (locPath) =>{
   try{
-    db = new Database(path, { verbose: console.log, fileMustExist: true });
-    return
+    db = new Database(locPath, { verbose: console.log, fileMustExist: true });
+    console.log("Connected")
+    // return 
   } catch(err){
-    //report Back failed DB Connection and return to settings page
+    console.log("ERRORING")
+    throw new Error("Cant Connect File Does Not Exist Or Permissions Not Set")
+  }
+  try {
+    conditionDB()
+  } catch(err) {
     console.log(err)
-    return err
+  }
+  return 
+}
+
+const conditionDB = () => {
+  try{
+    const dbUpdatedStatus = db.prepare(`Update Sheets Set user_id = 'Pending' Where offcut = 1 and user_id = ''`).run()
+    const sheetSummary = db.prepare("Select * From sheets Where offcut = 1").all()
+    sheetSummary.forEach((row) => {
+      const name = row.name.split("(")
+      db.prepare(`Update Sheets Set name = '${name[0]}(${row.user_id})' Where id = ${row.id}`).run()
+    })
+    return dbUpdatedStatus
+  } catch(err){
+    console.log("ERRORING", err)
+    throw new Error("Failed To Set DB Condtion")
   }
 }
 
@@ -33,6 +54,7 @@ const getSheetsFromDB = async() => {
     const sheet = {
       id: row.id,
       name: row.name,
+      visName: row.name.split("(")[0],
       dy:measurements[1].split(":")[0] - measurements[0].split(":")[0],
       dx:measurements[2].split(":")[1] - measurements[0].split(":")[1],
       status: row.user_id,
@@ -52,18 +74,29 @@ const putUpdatesize = async(sheet) => {
   console.log(`Update Sheets Set Shape = '${shape}' Where id = ${sheet.id} and name = '${sheet.name}'`)
   const updatedSheet = db.prepare(`Update Sheets Set Shape = '${shape}' Where id = ${sheet.id} and name = '${sheet.name}'`).run()
   const updatedSheet2 = db.prepare(`Update Sheets Set user_id = '${sheet.status}' Where id = ${sheet.id} and name = '${sheet.name}'`).run()
+  conditionDB()
     return updatedSheet2
   } catch(err) {
     console.log(err)
   }
 }
 
-// UPDATE employees
-// SET lastname = 'Smith'
-// WHERE employeeid = 3;
+const putDeletesize = async(sheet) => {
+  console.log("Removing Sheet", sheet)
+  try{
+    const removedSheet = db.prepare(`Delete From sheets Where id = '${sheet.id}' and name = '${sheet.name}'`).run()
+    console.log(removedSheet)
+    return removedSheet
+  } catch(err){
+    console.log(err)
+  }
+}
+
 
 module.exports.getNewDbConnection = getNewDbConnection
 module.exports.getMaterialsFromDB = getMaterialsFromDB
 module.exports.getThicknessFromDB = getThicknessFromDB
 module.exports.getSheetsFromDB = getSheetsFromDB
 module.exports.putUpdatesize = putUpdatesize
+module.exports.putDeletesize = putDeletesize
+module.exports.conditionDB = conditionDB

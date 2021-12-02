@@ -27,7 +27,7 @@ const MaterialList = observer(() => {
   }
 
   const SelectMaterialButton = (rowData:any) => {
-    return <Button type="button" icon="pi pi-angle-double-right" onClick={()=>{handleClick(rowData)}}></Button>;
+    return <Button type="button" icon="pi pi-angle-double-right" onClick={()=>{handleClick(rowData)}} style={{backgroundColor:'#239AAB'}} ></Button>;
   } 
 
     return (
@@ -35,6 +35,8 @@ const MaterialList = observer(() => {
           <DataTable value={rootStore.materials} paginator className="p-datatable-customers" header={renderHeader} rows={10} paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                     dataKey="id" rowHover
                     filterDisplay="menu" responsiveLayout="scroll"
+                    resizableColumns
+                    size="small"
                     emptyMessage="No Materials found."
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <Column field="id" header="ID" sortable filter filterPlaceholder="Search by ID" style={{ minWidth: '2rem' }} />

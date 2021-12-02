@@ -4,6 +4,7 @@ const SheetModel = types
     .model('SheetModel', { 
         id: types.integer,
         name: types.string,
+        visName: types.string,
         dy: types.number,
         dx: types.number,
         status: types.string,
