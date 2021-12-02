@@ -76,7 +76,7 @@ let installExtension, REACT_DEVELOPER_TOOLS;
     // If not Dev Mode - Set Up Auto-Updates
     if (!isDev) {
       // Variables For Auto Updater
-      const server = 'http://my-cabinetvision-pa.herokuapp.com'
+      const server = 'https://sheet-database.herokuapp.com/'
       const url = `${server}/update/${process.platform}/${app.getVersion()}`
       autoUpdater.setFeedURL({ url })
       // Set Timed Interval to Check Updates

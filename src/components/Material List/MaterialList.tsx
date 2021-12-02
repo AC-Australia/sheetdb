@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { useStores } from '../RootStoreProvider';
 import { RootStore } from '../../models/root-store';
@@ -7,22 +7,36 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { useHistory } from "react-router-dom";
 import StepView from '../generic/StepView';
-
+import 'primeflex/primeflex.css';
 const MaterialList = observer(() => {
 
   const rootStore: RootStore = useStores();
   const history = useHistory();
+  const [loading, setLoading] = useState(false)
+
   const handleClick = (value:any) => {
     rootStore.updateCurrentMaterialByID(value.id, value.name)  
     rootStore.updateStepNumber(1)
     history.push("/thickness")
   }
 
+  const handleUpdateSettings = async () => {
+    setLoading(true)
+    await rootStore.conectToDB()
+    await rootStore.hydrateMaterialList()
+    await rootStore.hydrateThicknessList()
+    await rootStore.hydrateSheetList()
+    localStorage.setItem('dbPathForSheetDB', JSON.stringify(rootStore.databasePath))
+    setLoading(false)
+    history.push("/")
+  }
+
+
   const renderHeader = () => {
     return (
-        <div className="p-d-flex p-jc-between p-ai-center">
-            <h2 className="p-m-0">Materials List</h2>
-        </div>
+        <div className="p-d-inline">
+            <h2>Materials List</h2>
+          </div>
     )
   }
 

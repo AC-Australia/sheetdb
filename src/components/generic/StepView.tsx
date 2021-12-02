@@ -86,7 +86,7 @@ const StepView = observer(() => {
   }, [history, rootStore.currentMaterial]);
 
     return (
-        <div>
+        <div style={{padding:'30px'}}>
             <Steps model={interactiveItems} activeIndex={rootStore.currentStep} onSelect={(e) => handleClick(e.index)} readOnly={false} />
         </div>
     )

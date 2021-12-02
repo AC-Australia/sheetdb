@@ -25,8 +25,8 @@ module.exports = {
       name: "@electron-forge/publisher-github",
       config: {
         repository: {
-          owner: "Blakew18",
-          name: "myMaterialHandling"
+          owner: "AC-Australia",
+          name: "sheetdb"
         },
         authToken: process.env.GITHUB_TOKEN,
       }

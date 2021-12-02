@@ -52,6 +52,13 @@ const SheetList = observer(() => {
     }
   }
 
+  const dyDecTrim = (rowData:any) => {
+    return rowData.dy.toFixed(3)
+  }
+  const dxDecTrim = (rowData:any) => {
+    return rowData.dx.toFixed(3)
+  }
+
     return (
         <div>
           <DataTable value={rootStore.sheetsFromThicknessID} paginator className="p-datatable-customers" header={renderHeader} rows={10} paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
@@ -64,8 +71,8 @@ const SheetList = observer(() => {
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <Column field="id" header="ID" sortable filter filterPlaceholder="Search by ID" style={{ minWidth: '1rem' }} />
             <Column field="visName" header="Name" sortable filter filterPlaceholder="Search by Name" style={{ minWidth: '24rem' }} /> 
-            <Column field="dy" header="Length" sortable filter filterPlaceholder="Search by Length" style={{ minWidth: '2rem' }} />
-            <Column field="dx" header="Width" sortable filter filterPlaceholder="Search by Width" style={{ minWidth: '2rem' }} />
+            <Column field="dy" header="Length" sortable filter filterPlaceholder="Search by Length" style={{ minWidth: '2rem' }} body={dyDecTrim} />
+            <Column field="dx" header="Width" sortable filter filterPlaceholder="Search by Width" style={{ minWidth: '2rem' }} body={dxDecTrim} />
             <Column field="position" header="Postition" sortable filter filterPlaceholder="Search by Postition" style={{ minWidth: '2rem' }} />
             <Column field="status" header="Status" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={statusBodyTemplate} />
             <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={SelectMaterialButton} />

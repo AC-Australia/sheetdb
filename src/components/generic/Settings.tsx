@@ -43,7 +43,7 @@ const Settings = observer(() => {
             <div className="p-formgroup-inline p-mb-2">
                     <label htmlFor="username1" className="p-sr-only">Username</label>
                     <InputText id="inputtext" value={rootStore.databasePath} onChange={(e) => rootStore.updateDBPathFromSettings(e.target.value)} className="p-invalid" />
-                    <Button label="Submit" icon="pi pi-check" loading={loading} onClick={handleUpdateSettings} />
+                    <Button label="Submit" icon="pi pi-check" loading={loading} onClick={handleUpdateSettings} style={{backgroundColor:'#239AAB'}}/>
                     {errorMessage()}
                 </div>
         </div>

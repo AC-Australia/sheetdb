@@ -1,6 +1,6 @@
 //NPM Imports
 import React, { useState, useEffect, useRef } from 'react';
-import { HashRouter } from 'react-router-dom';
+import { HashRouter, useHistory } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 // import { FirebaseAuthProvider, IfFirebaseAuthed, IfFirebaseUnAuthed } from "@react-firebase/auth";
 // import firebase from "firebase/app";
@@ -26,7 +26,6 @@ function App() {
   const updateAvalible = useRef(null);
   const showVersionDetail = useRef(null)
 
-  
   ipcRenderer.on('updateAvalible', (( event:any, message:string ) =>{
       return (
         updateAvalible.current.show([
@@ -34,6 +33,14 @@ function App() {
         ])
       )
   }))
+
+  const handleUpdateSettings = async () => {
+    await rootStore.conectToDB()
+    await rootStore.hydrateMaterialList()
+    await rootStore.hydrateThicknessList()
+    await rootStore.hydrateSheetList()
+    window.location.reload()
+  }
 
   const showVersionData = () => {
     if ( versionShowing ) {
@@ -74,16 +81,19 @@ function App() {
           <div className = 'fixed top-0 right-0 m-1'>
             <Button icon="pi pi-info-circle" className="p-button-rounded p-button-secondary" onClick={showVersionData} />
           </div>
+          <div className = 'fixed bottom-0 right-0 m-1'>
+            <Button icon="pi pi-refresh" className="p-button-rounded p-button-secondary" onClick={handleUpdateSettings} />
+          </div>
           <div className = 'fixed top-0 left-0 m-1'>
             <SettingsButton />
           </div>
           <div className = 'fixed my-10'>
-            <Messages ref={updateAvalible} />
+            <Messages ref={updateAvalible}/>
           </div>
           <div className = 'fixed right-0 my-10'>
-            <Messages ref={showVersionDetail} onClick={showVersionData} />
+            <Messages ref={showVersionDetail} onClick={showVersionData}/>
           </div>
-            <img src={headerImage} alt="AC Australia Logo" style={{ margin:"auto", padding:"10px" }} />
+            <img src={headerImage} alt="AC Australia Logo" style={{ height:"125px",margin:"auto" }} />
             <p style={{padding:'20px'}}><strong>Need Help? Email:</strong> <a href="mailto:HelpDesk@au.alphacam.com">HelpDesk@au.alphacam.com</a> </p>
           <ConnectedRouter />
         </HashRouter> 

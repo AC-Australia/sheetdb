@@ -30,6 +30,10 @@ const ThicknessList = observer(() => {
     return <Button type="button" icon="pi pi-angle-double-right" onClick={()=>{handleClick(rowData)}} style={{backgroundColor:'#239AAB'}} ></Button>;
   } 
 
+  const ThicknessSuffix = (rowData:any) =>{
+    return rowData.thickness + "mm"
+  }
+
     return (
         <div>
           <DataTable value={rootStore.thicknessFromMaterialID} paginator className="p-datatable-customers" header={renderHeader} rows={10} paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
@@ -40,7 +44,7 @@ const ThicknessList = observer(() => {
                     size="small"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <Column field="id" header="ID" sortable filter filterPlaceholder="Search by ID" style={{ minWidth: '2rem' }} />
-            <Column field="thickness" header="Thickness" sortable filter filterPlaceholder="Search by Name" style={{ minWidth: '24rem' }} /> 
+            <Column field="thickness" header="Thickness" sortable filter filterPlaceholder="Search by Name" style={{ minWidth: '24rem' }} body={ThicknessSuffix} /> 
             <Column field="position" header="Postition" sortable filter filterPlaceholder="Search by Postition" style={{ minWidth: '3rem' }} />
             <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={SelectMaterialButton} />
           </DataTable>

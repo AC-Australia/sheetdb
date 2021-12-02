@@ -169,7 +169,7 @@ const Modifications = observer(() => {
           <Toast ref={toast} />
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">Length</span>
-              <InputNumber placeholder={sheetModel.dy.toString()}onChange={(e) => updateLengthEvent(e)}/>
+              <InputNumber placeholder={sheetModel.dy.toFixed(3).toString()} mode="decimal" minFractionDigits={3} onChange={(e) => updateLengthEvent(e)}/>
               <span className="p-inputgroup-addon">
                 <Checkbox checked={lengthCheck}  onChange={(e) => setLengthCheck(!lengthCheck)} className={lengthValidation()} />
               </span>
@@ -177,7 +177,7 @@ const Modifications = observer(() => {
 
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">Width </span>
-              <InputNumber placeholder={sheetModel.dx.toString()} onChange={(e) => updateWidthEvent(e)}/>
+              <InputNumber placeholder={sheetModel.dx.toFixed(3).toString()} mode="decimal" minFractionDigits={3}  onChange={(e) => updateWidthEvent(e)}/>
               <span className="p-inputgroup-addon">
                 <Checkbox checked={widthCheck}  onChange={(e) => setWidthCheck(!widthCheck)} className={widthValidation()} />
               </span>

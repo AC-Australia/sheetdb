@@ -15,6 +15,7 @@ const ConnectedRouter = observer(() => {
   const rootStore: RootStore = useStores();
     if (rootStore.databaseConnection){
     return (
+        <div style={{padding:"5px"}}>
         <Switch>
             <Route path='/settings' component={Settings} />
             <Route path='/modifications' component={Modifications} />
@@ -22,6 +23,7 @@ const ConnectedRouter = observer(() => {
             <Route path='/thickness' component={ThicknessList} />  
             <Route component={MaterialList} />
         </Switch>
+        </div>
     )
     } else {
     return (
