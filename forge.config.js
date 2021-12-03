@@ -2,7 +2,7 @@ require('dotenv').config()
 
 module.exports = {
   "packagerConfig": {
-    "icon": "src/icons/assistant.ico",
+    "icon": "src/icons/acauslogo.ico",
     "name": "Sheet Database Manager",
     "authors": "AC Australia - BW",
     "description": "Handle Updates and Checks of the Sheet DB",
@@ -15,7 +15,7 @@ module.exports = {
       "config": {
         "name": "Sheet-Database-Manager",
         "authors": "AC Australia - BW",
-        "icon": "src/pages/assistant.ico",
+        "icon": "src/icons/acauslogo.ico",
         "description": "Handle Updates and Checks of the Sheet DB"
       }
     }

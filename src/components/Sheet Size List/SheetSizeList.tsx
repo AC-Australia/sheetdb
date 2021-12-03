@@ -60,11 +60,18 @@ const SheetList = observer(() => {
   }
 
     return (
-        <div>
-          <DataTable value={rootStore.sheetsFromThicknessID} paginator className="p-datatable-customers" header={renderHeader} rows={10} paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
+        <div className='h-full'>
+          <DataTable value={rootStore.sheetsFromThicknessID} 
+                    paginator 
+                    className="p-datatable-customers" 
+                    header={renderHeader} 
+                    rows={10} 
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                     dataKey="id" rowHover
                     filterDisplay="menu" responsiveLayout="scroll"
                     resizableColumns
+                    scrollable 
+                    scrollHeight="flex"
                     size="small"
                     rowClassName={rowClass}
                     emptyMessage="No Sheets For This Material And Thickness."
@@ -74,10 +81,10 @@ const SheetList = observer(() => {
             <Column field="dy" header="Length" sortable filter filterPlaceholder="Search by Length" style={{ minWidth: '2rem' }} body={dyDecTrim} />
             <Column field="dx" header="Width" sortable filter filterPlaceholder="Search by Width" style={{ minWidth: '2rem' }} body={dxDecTrim} />
             <Column field="position" header="Postition" sortable filter filterPlaceholder="Search by Postition" style={{ minWidth: '2rem' }} />
-            <Column field="status" header="Status" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={statusBodyTemplate} />
+            <Column field="status" header="Status" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '15rem' }} body={statusBodyTemplate} />
             <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={SelectMaterialButton} />
           </DataTable>
-          <StepView />
+          {/* <StepView /> */}
         </div>
     )
 })

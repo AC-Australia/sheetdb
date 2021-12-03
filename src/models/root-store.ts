@@ -23,7 +23,8 @@ export const RootStoreModel = types
     thicknesses: types.array(ThicknessModel),
     sheets: types.array(SheetModel),
     databasePath: types.maybe(types.string),
-    databaseConnection: types.boolean
+    databaseConnection: types.boolean,
+    tableHeight: types.maybe(types.string)
   })
   .views((self) => {
     return {
@@ -41,6 +42,9 @@ export const RootStoreModel = types
   })
   .actions((self) => {
     return {
+      setTableHeight(size:string){
+        self.tableHeight = size
+      },
       updateStepNumber(step:number) {
         self.currentStep = step
       },

@@ -35,10 +35,17 @@ const ThicknessList = observer(() => {
   }
 
     return (
-        <div>
-          <DataTable value={rootStore.thicknessFromMaterialID} paginator className="p-datatable-customers" header={renderHeader} rows={10} paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
+        <div className='h-full'>
+          <DataTable value={rootStore.thicknessFromMaterialID} 
+                    paginator 
+                    className="p-datatable-customers" 
+                    header={renderHeader} 
+                    rows={10} 
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                     dataKey="id" rowHover
                     filterDisplay="menu" responsiveLayout="scroll"
+                    scrollable 
+                    scrollHeight="flex"
                     emptyMessage="No Thicknesses For This Material Found."
                     resizableColumns
                     size="small"
@@ -48,7 +55,7 @@ const ThicknessList = observer(() => {
             <Column field="position" header="Postition" sortable filter filterPlaceholder="Search by Postition" style={{ minWidth: '3rem' }} />
             <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={SelectMaterialButton} />
           </DataTable>
-          <StepView />
+          {/* <StepView /> */}
         </div>
     )
 })

@@ -23,13 +23,12 @@ const Modifications = observer(() => {
   const rootStore: RootStore = useStores();
   const sheetModel: SheetModelType = rootStore.currentSheetByID
   const history = useHistory();
-  if(!rootStore.currentMaterial){
-    console.log("TESTING")
-    history.push("/")
-  }
+  // if(!rootStore.currentMaterial){
+  //   console.log("TESTING")
+  //   history.push("/")
+  // }
   const [loadingChanges, setLoadingChanges] = useState<boolean>(false)
-  
-  const [visible, setVisible] = useState<boolean>(false);
+
   const toast = useRef(null);
 
   const [length, setLength] = useState<number>(sheetModel.dy);
@@ -40,7 +39,7 @@ const Modifications = observer(() => {
   const [widthCheck, setWidthCheck] = useState<boolean>(false);
   const [widthIsUpdated, setWidthIsUpdated] = useState<boolean>(false)
 
-  const [status, setStatus] = useState<statusOptions>({ name: sheetModel.status, code: sheetModel.status });
+  const [status, setStatus] = useState<statusOptions>({ name: sheetModel.status, code: sheetModel.status});
   const [statusCheck, setStatusCheck] = useState<boolean>(false);
   const [statusIsUpdated, setStatusIsUpdated] = useState<boolean>(false)
 
@@ -158,13 +157,14 @@ const Modifications = observer(() => {
     }
   }
 
-
-
+  useEffect(() => {
+    if (!sheetModel) history.goBack()
+    },[history,sheetModel])
 
 
     return (
-        <div>
-          <h1>{rootStore.currentMaterialName} - {rootStore.currentThicknessName}mm - {sheetModel.visName}</h1>
+        <div className='h-full'>
+          <h1 className="p-m-0" style={{padding: '25px'}}><strong>{rootStore.currentMaterialName} - {rootStore.currentThicknessName}mm - {sheetModel.visName}</strong></h1>
           <Card  style={{ width: '45rem', marginBottom: '2em', margin:"auto", padding:"10px"}}>
           <Toast ref={toast} />
             <div className="p-inputgroup">
@@ -192,7 +192,7 @@ const Modifications = observer(() => {
             </div>
             <Button label="Save Changes" icon="pi pi-check" loading={loadingChanges} onClick={handleUpdate} style={{backgroundColor:'#239AAB'}}/>
           </Card>
-          <StepView />
+          {/* <StepView /> */}
         </div>
     )
 })
