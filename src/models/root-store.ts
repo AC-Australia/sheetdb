@@ -10,6 +10,7 @@ import {
 import MaterialModel from './MaterialModel';
 import ThicknessModel from './ThicknessModel';
 import SheetModel from './SheetModel'
+import SheetModelType from './SheetModel'
 
 export const RootStoreModel = types
   .model('RootStore', {
@@ -24,7 +25,8 @@ export const RootStoreModel = types
     sheets: types.array(SheetModel),
     databasePath: types.maybe(types.string),
     databaseConnection: types.boolean,
-    tableHeight: types.maybe(types.string)
+    tableHeight: types.maybe(types.string),
+    searchByType: types.integer
   })
   .views((self) => {
     return {
@@ -37,11 +39,31 @@ export const RootStoreModel = types
       get currentSheetByID() {
         const currentSheet = self.sheets.filter(sheet => sheet.id === self.currentSheet) 
         return currentSheet[0]
+      },
+      currentSheetWithID(id:number) {
+        const currentSheet = self.sheets.filter(sheet => sheet.id === id) 
+        return currentSheet[0]
       }
     };
   })
   .actions((self) => {
     return {
+      setStoreWithSheetIDSearch(id:number){
+        const sheet = self.sheets.filter(sheet => sheet.id === id)[0]
+        const thickness = self.thicknesses.filter(thickness => thickness.id === sheet.thicknessID)[0]
+        const material = self.materials.filter(material => material.id === thickness.material_id)[0]
+        self.currentMaterial = material.id
+        self.currentMaterialName = material.name
+        self.currentThickness = thickness.id
+        self.currentThicknessName = thickness.thickness
+        self.currentSheet = sheet.id
+        console.log(self.currentSheet)
+      },
+      setSearchByType(searchType:number){
+        if (searchType >= 0 && searchType <=2){
+          self.searchByType = searchType
+        }
+      },
       setTableHeight(size:string){
         self.tableHeight = size
       },
@@ -112,6 +134,14 @@ export const RootStoreModel = types
          self.databasePath = path
        }  
       },
+      getSearchTypeFromStorage(){
+        if (localStorage.getItem('searchType')) {
+          const seatchType = localStorage.getItem('searchType');
+          self.searchByType = JSON.parse(seatchType|| '')
+        } else {
+          self.searchByType = 0
+        }
+      },
       updateDBPathFromSettings(path:string) {
         self.databasePath = path
       }
@@ -120,8 +150,9 @@ export const RootStoreModel = types
 
 export type RootStore = Instance<typeof RootStoreModel>;
 export const setupRootStore = async () => {
-  const rs: RootStore = RootStoreModel.create({currentStep: 0, databaseConnection: false });
+  const rs: RootStore = RootStoreModel.create({currentStep: 0, databaseConnection: false, searchByType: 0 });
   rs.getDBPathFromStorage()
+  rs.getSearchTypeFromStorage()
   await rs.conectToDB()
   if (rs.databaseConnection){
     await rs.hydrateMaterialList()

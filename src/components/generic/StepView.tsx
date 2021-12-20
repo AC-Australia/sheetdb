@@ -13,46 +13,75 @@ const StepView = observer(() => {
 
   
 
-  const interactiveItems = [
-    {
-        label: 'Material',
-        command: () => {
-          rootStore.updateStepNumber(0)
-          history.push("/")
-        }
-    },  
-    {
-        label: 'Thickness',
-        command: () => {
-          if(rootStore.currentMaterial){
-            rootStore.updateStepNumber(1)
-            history.push("/thickness")
+  const interactiveItems = () => {
+    if (rootStore.searchByType === 0 ){
+      return (
+        [
+          {
+              label: 'Material',
+              command: () => {
+                rootStore.updateStepNumber(0)
+                history.push("/")
+              }
+          },  
+          {
+              label: 'Thickness',
+              command: () => {
+                if(rootStore.currentMaterial){
+                  rootStore.updateStepNumber(1)
+                  history.push("/thickness")
+                }
+              }
+          },
+          {
+              label: 'Sheet Size',
+              command: () => {
+                if(rootStore.currentThickness){
+                  rootStore.updateStepNumber(2)
+                  history.push("/sheets")
+                }
+              }
+          },
+          {
+              label: 'Modifications',
+              command: () => {
+                if(rootStore.currentSheet){
+                  rootStore.updateStepNumber(3)
+                  history.push("/modifications")
+                }
+              }
           }
-        }
-    },
-    {
-        label: 'Sheet Size',
-        command: () => {
-          if(rootStore.currentThickness){
-            rootStore.updateStepNumber(2)
-            history.push("/sheets")
+          ]
+      )
+    } else {
+      return (
+        [
+          {
+              label: 'Search Sheet',
+              command: () => {
+                rootStore.updateStepNumber(0)
+                history.push("/")
+              }
+          },  
+          {
+              label: 'Modifications',
+              command: () => {
+                if(rootStore.currentSheet){
+                  rootStore.updateStepNumber(3)
+                  history.push("/modifications")
+                }
+              }
           }
-        }
-    },
-    {
-        label: 'Modifications',
-        command: () => {
-          if(rootStore.currentSheet){
-            rootStore.updateStepNumber(3)
-            history.push("/modifications")
-          }
-        }
+          ]
+      )
     }
-    ];
+  } 
+  
+
 
     return (
         <div style={{padding:'30px'}}>
-            <Steps model={interactiveItems} activeIndex={rootStore.currentStep} readOnly={false} />
+            <Steps model={interactiveItems()} activeIndex={rootStore.currentStep} readOnly={false} />
         </div>
     )
 })

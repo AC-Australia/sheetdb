@@ -5,13 +5,14 @@ import { RootStore } from '../../models/root-store';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
+import { SelectButton } from 'primereact/selectbutton';
 import { useHistory } from "react-router-dom";
 import 'primeflex/primeflex.css';
 const MaterialList = observer(() => {
 
   const rootStore: RootStore = useStores();
   const history = useHistory();
-  
+
   const handleClick = (value:any) => {
     rootStore.updateCurrentMaterialByID(value.id, value.name)  
     rootStore.updateStepNumber(1)
@@ -31,7 +32,7 @@ const MaterialList = observer(() => {
   } 
 
     return (
-        <div className='h-full'>
+        <div className=' h-full'>
           <DataTable value={rootStore.materials} 
                     className="p-datatable-customers" 
                     header={renderHeader}
