@@ -66,6 +66,11 @@ const getSheetsFromDB = async() => {
   return sheets
 }
 
+// Code to Create new Sheet. Will Need to add name somehow 
+//INSERT INTO "sheets" ("thickness_id", "offcut", "shape", "user_id") VALUES
+//('4', '0', '0:0;2285:0;2285:465;0:465;0:0;&', 'Reserved');
+
+
 const putUpdatesize = async(sheet) => {
   //Shape Needs To Look Like This 
   //-8238.921256:-3724.907470;-5798.921256:-3724.907470;-5798.921256:-3489.907470;-8238.921256:-3489.907470;-8238.921256:-3724.907470 ;&

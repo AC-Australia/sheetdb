@@ -8,6 +8,7 @@ import Modifications from '../Modifications/Modifications';
 import SheetSizeList from '../Sheet Size List/SheetSizeList';
 import ThicknessList from '../Thickness List/ThicknessList';
 import SearchSelect from '../Select Search Type/SearchSelect';
+import NewMaterial from '../New Material/NewMaterial'
 
 
 const ConnectedRouter = observer(() => {
@@ -21,6 +22,7 @@ const ConnectedRouter = observer(() => {
                 <Route path='/modifications' component={Modifications} />
                 <Route path='/sheets' component={SheetSizeList} />
                 <Route path='/thickness' component={ThicknessList} />  
+                <Route path='/newMaterial' component={NewMaterial} />
                 <Route component={SearchSelect} />
             </Switch>
         </div>

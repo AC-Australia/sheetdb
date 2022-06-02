@@ -12,6 +12,7 @@ import { RootStore, setupRootStore } from './models/root-store';
 import { getVersionDetail } from './services/Services'
 import LoadingPage from './components/generic/LoadingPage';
 import SettingsButton from './components/generic/Settings Button';
+import NewMaterialButton from './components/generic/New Material Button';
 import ConnectedRouter from './components/routers/ConnectedRouter';
 import headerImage from './acauslogo.png';
 import iconLogo from './icons/acicon.png';
@@ -98,6 +99,9 @@ function App() {
           </div>
           <div className = 'fixed top-0 left-0 m-1 z-50'>
             <SettingsButton />
+          </div>
+          <div className = 'fixed bottom-0 left-0 m-1 z-50'>
+            <NewMaterialButton />
           </div>
           <div className = 'fixed right-0 my-10 z-50'>
             <Messages ref={updateAvalible}/>

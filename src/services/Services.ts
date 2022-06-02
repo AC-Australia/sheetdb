@@ -49,6 +49,11 @@ export const getSheetList = async () => {
   return sheets.data
 }
 
+export const NewSheetSize = async (thickID:number, dy:number, dx:number, status:string) => {
+  console.log("Into Services")
+  return 
+}
+
 export const updateSheet = async (id:number, name:string, width:number, length:number, status:string) => {
   console.log(id,name,width,length,status)
   const newSheet = await axios.put(`http://localhost:${expressPort}/api/update-size`, {

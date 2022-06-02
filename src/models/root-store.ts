@@ -5,6 +5,7 @@ import {
   getSheetList,
   updateSheet,
   deleteSheet,
+  NewSheetSize,
   generateDBConnection
   } from '../services/Services';
 import MaterialModel from './MaterialModel';
@@ -43,6 +44,10 @@ export const RootStoreModel = types
       currentSheetWithID(id:number) {
         const currentSheet = self.sheets.filter(sheet => sheet.id === id) 
         return currentSheet[0]
+      },
+      thicknessesFromCustomID(id:number) {
+        const availableThicknesses = self.thicknesses.filter(thickness => thickness.material_id === id)
+        return availableThicknesses
       }
     };
   })
@@ -103,6 +108,10 @@ export const RootStoreModel = types
         } catch(err){
           console.log(err)
         }
+      }),
+      createNewSheetSize: flow(function* createNewSheetSize( thickID:number, dy:number, dx:number, status:string){
+        const newSheetID = yield NewSheetSize(thickID, dy, dx, status)
+        return 
       }),
       updateSheetSize: flow(function* updateSheetSize(id:number, dy:number, dx:number, status:string) {
         const sheet = self.sheets.filter(sheet => sheet.id === id)[0]
