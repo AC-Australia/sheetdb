@@ -42,6 +42,11 @@ app.put('/api/update-size', async (req,res) => {
     res.json(newSheet);
 })
 
+app.put('/api/new-sheet', async (req,res) => {
+    const newSheet = await sheetdb.putaddNewMaterial(req.body)
+    res.json(newSheet)
+})
+
 app.put('/api/delete-size', async (req,res) => {
     let deletedSheet = await sheetdb.putDeletesize(req.body)
     res.json(deletedSheet);

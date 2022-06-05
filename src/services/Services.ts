@@ -50,8 +50,14 @@ export const getSheetList = async () => {
 }
 
 export const NewSheetSize = async (thickID:number, dy:number, dx:number, status:string) => {
-  console.log("Into Services")
-  return 
+  const newSheet = await axios.put(`http://localhost:${expressPort}/api/new-sheet`, {
+    thickID: thickID,
+    width: dx,
+    length: dy,
+    status: status
+  })
+  console.log(newSheet)
+  return newSheet
 }
 
 export const updateSheet = async (id:number, name:string, width:number, length:number, status:string) => {
