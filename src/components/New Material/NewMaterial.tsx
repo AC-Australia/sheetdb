@@ -67,16 +67,39 @@ const NewMaterial = observer(() => {
     setLoadingChanges(true)
     if (materialName && materialThickness && (newOffcutDY > 0) && (newOffcutDX > 0) && newOffcutStatus){
 
-      await rootStore.createNewSheetSize(materialThickness.code, newOffcutDY, newOffcutDX, newOffcutStatus.name)
-
-
-      toast.current.show({ severity: 'success', summary: 'Offcut Created', detail: 'Your offcut has been successfully created.', life: 2000 });
+      const newSheet = await rootStore.createNewSheetSize(materialThickness.code, newOffcutDY, newOffcutDX, newOffcutStatus.name)
+      console.log(newSheet.data)
+      if (newSheet.data === "No Existing Sheets"){
+        toast.current.show({ severity: 'error', summary: 'Offcut Not Created', detail: 'Offcut Creation for Materials with no current offcuts not currently supported', life: 8000 });
+      }else{
+        toast.current.show({ severity: 'success', summary: 'Offcut Created', detail: 'Your offcut has been successfully created.', life: 2000 });
+      }
     } else {
       toast.current.show({ severity: 'error', summary: 'Offcut Not Created', detail: 'Please check all fields have been filled in correctly', life: 8000 });
     }
 
     setLoadingChanges(false)
   }
+
+  const handleLengthUpdate = (e:number) => {
+    if (e == null) {
+      setNewOffcutDY(0)
+    } else {
+      setNewOffcutDY(e)
+    }
+    //setNewOffcutDY()
+  }
+
+  const handleWitdthUpdate = (e:number) => {
+    if (e == null) {
+      setNewOffcutDX(0)
+    } else {
+      setNewOffcutDX(e)
+    }
+    //setNewOffcutDY()
+  }
+
+
  
     return (
       <div className='h-full'>
@@ -93,11 +116,11 @@ const NewMaterial = observer(() => {
         </div>
         <div className="p-inputgroup">
           <span className="p-inputgroup-addon">Length</span>
-            <InputNumber placeholder={newOffcutDY.toString()} mode="decimal" minFractionDigits={3} onChange={(e) => setNewOffcutDY(e.value)}/>
+            <InputNumber placeholder={newOffcutDY.toString()} mode="decimal" minFractionDigits={3} onChange={(e) => handleLengthUpdate(e.value)}/>
         </div>
         <div className="p-inputgroup">
           <span className="p-inputgroup-addon">Width</span>
-            <InputNumber placeholder={newOffcutDX.toString()} mode="decimal" minFractionDigits={3} onChange={(e) => setNewOffcutDX(e.value)}/>
+            <InputNumber placeholder={newOffcutDX.toString()} mode="decimal" minFractionDigits={3} onChange={(e) => handleWitdthUpdate(e.value)}/>
         </div>
         <div className="p-inputgroup">
           <span className="p-inputgroup-addon">Status </span>

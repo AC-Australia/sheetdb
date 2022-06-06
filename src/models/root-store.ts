@@ -111,7 +111,7 @@ export const RootStoreModel = types
       }),
       createNewSheetSize: flow(function* createNewSheetSize( thickID:number, dy:number, dx:number, status:string){
         const newSheetID = yield NewSheetSize(thickID, dy, dx, status)
-        return 
+        return newSheetID 
       }),
       updateSheetSize: flow(function* updateSheetSize(id:number, dy:number, dx:number, status:string) {
         const sheet = self.sheets.filter(sheet => sheet.id === id)[0]
