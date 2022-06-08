@@ -1,6 +1,6 @@
 {
   "name": "sheetdb-reader",
-  "version": "1.1.18",
+  "version": "1.2.21",
   "author": "AC Australia",
   "main": "public/electron.js",
   "homepage": "./",

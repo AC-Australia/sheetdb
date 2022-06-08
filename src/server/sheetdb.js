@@ -88,18 +88,24 @@ const putUpdatesize = async(sheet) => {
 
 const putaddNewMaterial = async(sheet) => {
   try{
-  const matchingSheets = await db.prepare(`Select * From Sheets Where thickness_id = ${sheet.thickID} and offcut = 1`).all()
-  if(matchingSheets.length >= 1){
-  const latestSheet = matchingSheets[matchingSheets.length - 1]
-  const materialName = latestSheet.name.split(/([0-9]*[x][0-9]*)\w+/)[0]
-  const recentOffcutNumber = latestSheet.name.split('Offcut ')[1].split('(')[0]
-  const sheetShape = `0:0;${sheet.width}:0;${sheet.width}:${sheet.length};0:${sheet.length};0:0;&`
-  const sheetName = `${materialName} ${sheet.length}x${sheet.width}, Offcut ${parseInt(recentOffcutNumber) + 1} (${sheet.status})`
-  const newSheet = await db.prepare(`INSERT INTO "sheets" ("thickness_id", "offcut", "width", "height", "units", "shape", "grain_direction", "user_id", "cost_per_sheet", "quantity", "name", "inherit_cost", "num_reserved", "position") VALUES (${sheet.thickID},1,0,0,'${latestSheet.units}','${sheetShape}',${latestSheet.grain_direction},'${sheet.status}',${latestSheet.cost_per_sheet},1,'${sheetName}',${latestSheet.inherit_cost},${latestSheet.num_reserved},0)`).run()
-  return newSheet
-  } else {
+  const matchingSheetsOffcuts = await db.prepare(`Select * From Sheets Where thickness_id = ${sheet.thickID} and offcut = 1`).all()
+  const matchingSheets = await db.prepare(`Select * From Sheets Where thickness_id = ${sheet.thickID}`).all()
+  if(matchingSheets.length === 0){
     console.log("Eventually Deal with Sheets that do not already have offcuts")
     return "No Existing Sheets"
+  } else {
+    let recentOffcutNumber
+    const latestSheet = matchingSheets[matchingSheets.length - 1]
+    const materialName = latestSheet.name.split(/([0-9]*[x][0-9]*)\w+/)[0]
+    if (matchingSheetsOffcuts.length === 0) {
+      recentOffcutNumber = 0
+    } else{
+      recentOffcutNumber = latestSheet.name.split('Offcut ')[1].split('(')[0]
+    }
+    const sheetShape = `0:0;${sheet.width}:0;${sheet.width}:${sheet.length};0:${sheet.length};0:0;&`
+    const sheetName = `${materialName} ${sheet.length}x${sheet.width}, Offcut ${parseInt(recentOffcutNumber) + 1} (${sheet.status})` 
+    const newSheet = await db.prepare(`INSERT INTO "sheets" ("thickness_id", "offcut", "width", "height", "units", "shape", "grain_direction", "user_id", "cost_per_sheet", "quantity", "name", "inherit_cost", "num_reserved", "position") VALUES (${sheet.thickID},1,0,0,'${latestSheet.units}','${sheetShape}',${latestSheet.grain_direction},'${sheet.status}',${latestSheet.cost_per_sheet},1,'${sheetName}',${latestSheet.inherit_cost},${latestSheet.num_reserved},0)`).run()
+    return newSheet
   }
   } catch(err) {
     console.log("ERR", err)
